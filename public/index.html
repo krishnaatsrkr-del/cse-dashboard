@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Cumulative Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Student Cumulative Dashboard</h1>
+
+      <section class="panel">
+        <h2>Import Results</h2>
+        <form id="import-form">
+          <label for="import-path">Excel file path</label>
+          <input id="import-path" type="text" value="F:\student-dashboard\22B SERIES CSE RESULT ANALYSIS - Copy.xlsx" />
+          <button type="submit">Import</button>
+        </form>
+        <p id="import-status" class="muted"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Student Lookup</h2>
+        <form id="search-form">
+          <label for="roll-input">Roll number</label>
+          <input id="roll-input" type="text" placeholder="22B91A0501" />
+          <button type="submit">Fetch Summary</button>
+        </form>
+        <p id="search-status" class="muted"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Academic Summary</h2>
+        <div id="summary-card" class="summary-grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Semester Performance</h2>
+        <table id="semester-table">
+          <thead>
+            <tr>
+              <th>Semester</th>
+              <th>SGPA</th>
+              <th>CGPA Snapshot</th>
+              <th>Backlogs</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <h2>Backlog Subjects (Manual Update)</h2>
+        <p class="muted">Mark cleared backlog subjects as pass manually.</p>
+        <table id="backlog-table">
+          <thead>
+            <tr>
+              <th>Semester</th>
+              <th>Subject</th>
+              <th>Grade</th>
+              <th>Grade Points</th>
+              <th>Credits</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="panel">
+        <h2>Permission Letters</h2>
+        <form id="permission-form">
+          <div class="grid-2">
+            <div>
+              <label for="letter-no">Letter No</label>
+              <input id="letter-no" type="text" required />
+            </div>
+            <div>
+              <label for="permission-type">Type</label>
+              <input id="permission-type" type="text" placeholder="Exam/Attendance/Other" required />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="issued-on">Issued On</label>
+              <input id="issued-on" type="date" />
+            </div>
+            <div>
+              <label for="valid-from">Valid From</label>
+              <input id="valid-from" type="date" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="valid-to">Valid To</label>
+              <input id="valid-to" type="date" />
+            </div>
+            <div>
+              <label for="remarks">Remarks</label>
+              <input id="remarks" type="text" />
+            </div>
+          </div>
+          <label for="reason">Reason</label>
+          <textarea id="reason" rows="3"></textarea>
+          <button type="submit">Save Permission</button>
+        </form>
+        <p id="permission-status" class="muted"></p>
+        <table id="permission-table">
+          <thead>
+            <tr>
+              <th>Letter No</th>
+              <th>Type</th>
+              <th>Issued</th>
+              <th>Valid</th>
+              <th>Reason</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+  </html>
