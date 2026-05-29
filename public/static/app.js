@@ -1,8 +1,16 @@
 let currentRollNo = "";
 
 async function fetchJson(url, options = {}) {
+  const isFormData = options.body instanceof FormData;
+  const headers = { ...(options.headers || {}) };
+  const hasContentTypeHeader = Object.keys(headers).some(
+    (key) => key.toLowerCase() === "content-type"
+  );
+  if (!isFormData && !hasContentTypeHeader) {
+    headers["Content-Type"] = "application/json";
+  }
   const response = await fetch(url, {
-    headers: { "Content-Type": "application/json" },
+    headers,
     ...options,
   });
   const data = await response.json().catch(() => ({}));
@@ -157,21 +165,39 @@ async function loadStudentSummary(rollNo) {
 
 document.getElementById("import-form").addEventListener("submit", async (event) => {
   event.preventDefault();
+  const fileInput = document.getElementById("import-file");
+  const selectedFile = fileInput?.files?.[0] || null;
   const filePath = document.getElementById("import-path").value.trim();
-  if (!filePath) {
-    setText("import-status", "Provide an Excel file path");
+  if (!selectedFile && !filePath) {
+    setText("import-status", "Upload an Excel file or provide a server file path");
     return;
   }
   setText("import-status", "Import running...");
   try {
-    const payload = await fetchJson("/api/import/results", {
-      method: "POST",
-      body: JSON.stringify({ file_path: filePath }),
-    });
+    let payload;
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("results_file", selectedFile);
+      if (filePath) {
+        formData.append("file_path", filePath);
+      }
+      payload = await fetchJson("/api/import/results", {
+        method: "POST",
+        body: formData,
+      });
+    } else {
+      payload = await fetchJson("/api/import/results", {
+        method: "POST",
+        body: JSON.stringify({ file_path: filePath }),
+      });
+    }
     setText(
       "import-status",
       `Import completed | rows=${payload.rows_imported}, skipped=${payload.rows_skipped}`
     );
+    if (fileInput) {
+      fileInput.value = "";
+    }
   } catch (err) {
     setText("import-status", err.message);
   }
