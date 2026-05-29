@@ -168,6 +168,9 @@ async function upsertStudent(rollNo, studentName, joinYear, cohortType, branch) 
   const update = {
     updated_at: new Date(),
   };
+  const setOnInsert = {
+    roll_no: rollNo,
+  };
 
   if (studentName) {
     update.student_name = studentName;
@@ -178,6 +181,9 @@ async function upsertStudent(rollNo, studentName, joinYear, cohortType, branch) 
   if (cohortType && cohortType !== "UNKNOWN") {
     update.cohort_type = cohortType;
   }
+  if (!cohortType || cohortType === "UNKNOWN") {
+    setOnInsert.cohort_type = "UNKNOWN";
+  }
   if (branch) {
     update.branch = branch;
   }
@@ -185,10 +191,7 @@ async function upsertStudent(rollNo, studentName, joinYear, cohortType, branch) 
   await Student.updateOne(
     { roll_no: rollNo },
     {
-      $setOnInsert: {
-        roll_no: rollNo,
-        cohort_type: cohortType || "UNKNOWN",
-      },
+      $setOnInsert: setOnInsert,
       $set: update,
     },
     { upsert: true }
