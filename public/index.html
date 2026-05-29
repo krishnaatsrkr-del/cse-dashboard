@@ -13,7 +13,13 @@
       <section class="panel">
         <h2>Import Results</h2>
         <form id="import-form">
-          <label for="import-path">Excel file path</label>
+          <label for="import-file">Upload Excel file</label>
+          <input
+            id="import-file"
+            type="file"
+            accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+          />
+          <label for="import-path">Or server file path (optional)</label>
           <input
             id="import-path"
             type="text"
